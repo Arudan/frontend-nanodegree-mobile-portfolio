@@ -1,11 +1,21 @@
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var ngrok = require('ngrok');
-var psi = require('psi');
-var sequence = require('run-sequence');
-var browserSync = require('browser-sync');
-var site = '';
-var portVal = 3020;
+/* globals require, process */
+var gulp = require('gulp'),
+    autoprefixer = require('gulp-autoprefixer'),
+    minifycss = require('gulp-minify-css'),
+    jshint = require('gulp-jshint'),
+    uglify = require('gulp-uglify'),
+    imagemin = require('gulp-imagemin'),
+    rename = require('gulp-rename'),
+    concat = require('gulp-concat'),
+    notify = require('gulp-notify'),
+    cache = require('gulp-cache'),
+    del = require('del'),
+    ngrok = require('ngrok'),
+    psi = require('psi'),
+    sequence = require('run-sequence'),
+    browserSync = require('browser-sync'),
+    site = '',
+    portVal = 3020;
 
 gulp.task('browser-sync-psi', function() {
   browserSync({
@@ -61,6 +71,45 @@ gulp.task('psi', ['psi-seq'], function() {
   process.exit();
 });
 
+gulp.task('styles', function() {
+  return gulp.src('src/css/*.css')
+    .pipe(autoprefixer('last 2 version'))
+    .pipe(gulp.dest('dist/assets/css'))
+    .pipe(rename({suffix: '.min'}))
+    .pipe(minifycss())
+    .pipe(gulp.dest('dist/assets/css'))
+    .pipe(notify({ message: 'Styles task complete' }));
+});
+
+gulp.task('scripts', function() {
+  return gulp.src('js/*.js')
+    .pipe(jshint('.jshintrc'))
+    .pipe(jshint.reporter('default'))
+    .pipe(concat('main.js'))
+    .pipe(gulp.dest('dist/assets/js'))
+    .pipe(rename({suffix: '.min'}))
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/assets/js'))
+    .pipe(notify({ message: 'Scripts task complete' }));
+});
+
+gulp.task('images', function() {
+  return gulp.src('src/img/**/*')
+    .pipe(cache(imagemin({ optimizationLevel: 3, progressive: false, interlaced: false })))
+    .pipe(gulp.dest('dist/images'))
+    .pipe(notify({ message: 'Images task complete' }));
+});
+
+// Clean
+gulp.task('clean', function() {
+  return del(['dist/styles', 'dist/scripts', 'dist/images']);
+});
+
+// Default task
+gulp.task('default', ['clean'], function() {
+  gulp.start('styles', 'scripts', 'images');
+});
+
 gulp.task('serve', ['sass'], function() {
     browserSync({
       port: portVal,
@@ -71,16 +120,6 @@ gulp.task('serve', ['sass'], function() {
     //gulp.watch("app/scss/*.scss", ['sass']);
     //gulp.watch("app/*.html").on('change', browserSync.reload);
 });
-
-// Compile sass into CSS & auto-inject into browsers
-gulp.task('sass', function() {
-    return gulp.src("app/scss/*.scss")
-        .pipe(sass())
-        .pipe(gulp.dest("app/css"))
-        .pipe(browserSync.stream());
-});
-
-gulp.task('default', ['serve']);
 
 gulp.task('ngrok-serve', function(cb){
   return sequence(
