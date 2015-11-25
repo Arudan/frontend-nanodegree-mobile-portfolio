@@ -1,0 +1,27 @@
+{
+  "name": "frontend-nanodegree-mobile-portfolio",
+  "version": "1.0.0",
+  "description": "Udacity FEN P4",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arudan/frontend-nanodegree-mobile-portfolio.git"
+  },
+  "author": "Alberto Francesco Motta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Arudan/frontend-nanodegree-mobile-portfolio/issues"
+  },
+  "homepage": "https://github.com/Arudan/frontend-nanodegree-mobile-portfolio#readme",
+  "devDependencies": {
+    "browser-sync": "^2.10.0",
+    "gulp-exit": "0.0.2",
+    "gulp-sass": "^2.1.0",
+    "ngrok": "^0.1.8",
+    "psi": "^2.0.2",
+    "run-sequence": "^1.1.4"
+  }
+}
