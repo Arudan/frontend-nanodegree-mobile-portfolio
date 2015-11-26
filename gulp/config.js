@@ -2,7 +2,7 @@ var src               = 'src';
 var build             = 'build';
 var development       = 'build/development';
 var production        = 'build/production';
-var srcAssets         = 'src';
+var srcAssets         = 'src/assets';
 var developmentAssets = 'build/development/assets';
 var productionAssets  = 'build/production/assets';
 
@@ -78,13 +78,13 @@ module.exports = {
     // A separate bundle will be generated for each
     // bundle config in the list below
     bundleConfigs: [{
-      entries:    './' + srcAssets + '/javascripts/application.js',
+      entries:    './' + srcAssets + '/js/main.js',
       dest:       developmentAssets + '/js',
-      outputName: 'application.js'
+      outputName: 'main.js'
     }, {
-      entries:    './' + srcAssets + '/javascripts/head.js',
+      entries:    './' + srcAssets + '/js/perfmatters.js',
       dest:       developmentAssets + '/js',
-      outputName: 'head.js'
+      outputName: 'perfmatters.js'
     }]
   },
   images: {
@@ -137,7 +137,7 @@ module.exports = {
       }
     },
     html: {
-      src: production + '/**/*.html',
+      src: src + '/*.html',
       dest: production,
       options: {
         collapseWhitespace: true
