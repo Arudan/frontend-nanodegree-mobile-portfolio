@@ -11,6 +11,7 @@ gulp.task('build', function(callback) {
     'optimize:js',
     'optimize:images',
     'optimize:html',
+    'inline',
     callback
   );
 });

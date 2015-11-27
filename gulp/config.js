@@ -53,5 +53,10 @@ module.exports = {
         collapseWhitespace: true
       }
     }
+  },
+  inline: {
+    src: build + '/index.html',
+    dest: build,
+    options: {}
   }
 };
