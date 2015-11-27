@@ -3,21 +3,15 @@ var gulp = require('gulp'),
   psi = require('psi'),
   sequence = require('run-sequence'),
   browserSync = require('browser-sync'),
-  baseDir = require('../../config').production,
+  config = require('./config'),
   site = '',
   portVal = 3020;
 
 gulp.task('browser-sync-psi', ['build'], function() {
-  browserSync({
-    port: portVal,
-    open: false,
-    server: {
-      baseDir: ''
-    }
-  });
+  browserSync(config.browsersync.psi);
 });
 
-gulp.task('ngrok-url', function(cb) {
+gulp.task('ngrok-url', ['browser-sync-psi'], function(cb) {
   return ngrok.connect(portVal, function(err, url) {
     site = url;
     console.log('serving your tunnel from: ' + site);
@@ -48,7 +42,6 @@ gulp.task('mobile', function() {
 
 gulp.task('psi-seq', function(cb) {
   return sequence(
-    'browser-sync-psi',
     'ngrok-url',
     'desktop',
     'mobile',

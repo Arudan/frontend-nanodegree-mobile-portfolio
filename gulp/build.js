@@ -7,12 +7,10 @@ var runSequence = require('run-sequence');
 gulp.task('build', function(callback) {
   runSequence(
     'delete',
-    [
-      'styles',
-      'scripts',
-      'images',
-    ],
-    'base64',
+    'optimize:css',
+    'optimize:js',
+    'optimize:images',
+    'optimize:html',
     callback
   );
 });
