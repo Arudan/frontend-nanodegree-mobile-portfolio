@@ -1,6 +1,5 @@
 var gulp    = require('gulp');
 var htmlmin = require('gulp-htmlmin');
-var inlineCss = require('gulp-inline-css');
 var config  = require('./config').optimize.html;
 var inlineConfig = require('./config').inlinecss;
 
