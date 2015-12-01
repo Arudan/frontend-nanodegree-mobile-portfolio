@@ -12,6 +12,13 @@ module.exports = {
       },
       port: 9998
     },
+    dev: {
+      notify: false,
+      server: {
+        baseDir: [src]
+      },
+      port: 9999
+    },
     psi: {
       port: 3020,
       open: false,
