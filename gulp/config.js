@@ -17,7 +17,12 @@ module.exports = {
       server: {
         baseDir: [src]
       },
-      port: 9999
+      port: 9999,
+      files: [
+        srcAssets + '/css/**/*.css',
+        srcAssets + '/js/**/*.js',
+        srcAssets + '/images/**/*',
+      ]
     },
     psi: {
       port: 3020,
@@ -65,5 +70,10 @@ module.exports = {
     src: build + '/index.html',
     dest: build,
     options: {}
+  },
+  watch: {
+    css:    srcAssets + '/css/**/*.css',
+    js: srcAssets + '/js/**/*.js',
+    images:  srcAssets + '/images/**/*',
   }
 };
