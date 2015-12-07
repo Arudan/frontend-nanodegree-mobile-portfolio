@@ -15,7 +15,7 @@ Website and then rate it through PageSpeed Insight.
 To improve the psi score, I've implemented gulp, to automatically optimize images,
 minimize js and css and inline essential css.
 
-### pizza.html
+#### pizza.html
 To keep the framerate during scrolling at 60fps, if modified the updatePositions
 method, to cache all possible values and to use transform property, which does not
 trigger layout nor paint.
