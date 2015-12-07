@@ -493,12 +493,20 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark('mark_start_frame');
-
-  var items = document.querySelectorAll('.mover');
-  var scrollTop = Math.sin((document.body.scrollTop / 1250));
-  for (var i = 0; i < items.length; i++) {
-    var phase = scrollTop + (i % 5);
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+  // caches the scrollTop value
+  var scrollTop = document.body.scrollTop / 1250;
+  // Creates an array of the five possible phases, so that calculations are not
+  // repetead evey time
+  var phaseArray = [];
+  for (var i = 0; i < 5; i++){
+    phaseArray.push(Math.sin(scrollTop + i));
+  }
+  // Changed to getElementsByClassName, which is faster than querySelector
+  var items = document.getElementsByClassName('mover');
+  for (i = 0; i < items.length; i++) {
+    var phase = Math.sin(scrollTop + (i % 5));
+    // Transform does not trigger forced layout
+    items[i].style.transform = 'translateX(' + (100 * phase + items[i].basicLeft) + 'px)';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -524,7 +532,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.src = 'assets/images/pizza.png';
     elem.style.height = '100px';
     elem.style.width = '73.333px';
-    elem.basicLeft = (i % cols) * s;
+    elem.basicLeft = (i % cols) * s - 512;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector('#movingPizzas1').appendChild(elem);
   }
