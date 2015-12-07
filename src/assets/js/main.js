@@ -444,7 +444,8 @@ var resizePizzas = function(size) {
   function changePizzaSizes(size) {
     var pizzas = document.getElementsByClassName('randomPizzaContainer');
     var newwidth = determineDx(size);
-    for (var i = 0; i < pizzas.length; i++) {
+    var pizzasNumber = pizzas.length;
+    for (var i = 0; i < pizzasNumber; i++) {
       pizzas[i].style.width = newwidth + '%';
     }
   }
@@ -505,10 +506,12 @@ function updatePositions() {
   }
   // Changed to getElementsByClassName, which is faster than querySelector
   var items = document.getElementsByClassName('mover');
-  for (i = 0; i < items.length; i++) {
-    var phase = Math.sin(scrollTop + (i % 5));
+  var itemsNumber = items.length;
+  var phase;
+  for (i = 0; i < itemsNumber; i++) {
+    phase = Math.sin(scrollTop + (i % 5));
     // Transform does not trigger forced layout
-    items[i].style.transform = 'translateX(' + (100 * phase + items[i].basicLeft) + 'px)';
+    items[i].style.transform = 'translateX(' + (100 * phase) + 'px)';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -529,16 +532,21 @@ document.addEventListener('DOMContentLoaded', function() {
   var elemHeight = 100;
   var elemWidth = 73.333;
   var s = 256;
-  var cols = Math.floor(window.screen.width / s);
-  var rows = Math.floor(window.screen.height / elemHeight);
+  var cols = Math.ceil(window.screen.width / s) + 1;
+  var rows = Math.ceil(window.screen.height / elemHeight);
   var pizzaFragment = document.createDocumentFragment();
+  // declared the variable outside the for loop, so that it isn't created at
+  // every loop - as suggested by Jose's review
+  var elem;
   for (var i = 0; i < rows * cols; i++) {
-    var elem = document.createElement('img');
+    elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = 'assets/images/pizza.png';
     elem.style.height = elemHeight + 'px';
     elem.style.width = elemWidth + 'px';
-    elem.basicLeft = (i % cols) * s - 512;
+    // as the pizzas are moved using the translateX property, I've also changed
+    // this line to reflect the modified logic - as suggested by Jose's review
+    elem.style.left = (i % cols) * s + 'px';
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     pizzaFragment.appendChild(elem);
   }
