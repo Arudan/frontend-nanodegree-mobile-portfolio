@@ -22,7 +22,6 @@ gulp.task('ngrok-url', ['browser-sync-psi'], function(cb) {
 gulp.task('desktop', function() {
   return psi(site, {
     nokey: 'true',
-    // key: key,
     strategy: 'desktop',
   }).then(function(data) {
     console.log('DESKTOP - Speed score: ' + data.ruleGroups.SPEED.score);
@@ -31,7 +30,6 @@ gulp.task('desktop', function() {
 
 gulp.task('mobile', function() {
   return psi(site, {
-    // key: key
     nokey: 'true',
     strategy: 'mobile',
   }).then(function(data) {

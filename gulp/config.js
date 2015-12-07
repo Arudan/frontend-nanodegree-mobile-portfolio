@@ -53,9 +53,8 @@ module.exports = {
       src:  srcAssets + '/images/**/*.{jpg,jpeg,png,gif}',
       dest: buildAssets + '/images/',
       options: {
-        optimizationLevel: 3,
-        progessive: true,
-        interlaced: true
+        optimizationLevel: 6,
+        progessive: false,
       }
     },
     html: {
