@@ -444,6 +444,7 @@ var resizePizzas = function(size) {
   function changePizzaSizes(size) {
     var pizzas = document.getElementsByClassName('randomPizzaContainer');
     var newwidth = determineDx(size);
+    // save the length of the array, for optimization
     var pizzasNumber = pizzas.length;
     for (var i = 0; i < pizzasNumber; i++) {
       pizzas[i].style.width = newwidth + '%';
@@ -461,11 +462,14 @@ var resizePizzas = function(size) {
 
 window.performance.mark('mark_start_generating'); // collect timing data
 
-// This for-loop actually creates and appends all of the pizzas when the page loads
+// creates a DocumentFragment, to which append generated pizzas, then appends
+// the fragment to the DOM. This way we prevent continuous recalculation  of
+// the DOM
 var docFragment = document.createDocumentFragment();
 for (var i = 2; i < 100; i++) {
   docFragment.appendChild(pizzaElementGenerator(i));
 }
+// Append the fragment to the DOM
 var pizzasDiv = document.getElementById('randomPizzas');
 pizzasDiv.appendChild(docFragment);
 
@@ -507,6 +511,8 @@ function updatePositions() {
   // Changed to getElementsByClassName, which is faster than querySelector
   var items = document.getElementsByClassName('mover');
   var itemsNumber = items.length;
+  // declared the variable outside the loop, to prevent it from beign created
+  // at every loop
   var phase;
   for (i = 0; i < itemsNumber; i++) {
     phase = Math.sin(scrollTop + (i % 5));
@@ -532,8 +538,12 @@ document.addEventListener('DOMContentLoaded', function() {
   var elemHeight = 100;
   var elemWidth = 73.333;
   var s = 256;
+  // calculates the number of columns (plus one, to be sure of cover all screen)
   var cols = Math.ceil(window.screen.width / s) + 1;
+  // calculates the numbers of rows
   var rows = Math.ceil(window.screen.height / elemHeight);
+  // creates a DocumentFragment, to which append the 'moving pizzas', then appends
+  // the fragment to the DOM.
   var pizzaFragment = document.createDocumentFragment();
   // declared the variable outside the for loop, so that it isn't created at
   // every loop - as suggested by Jose's review
@@ -550,6 +560,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     pizzaFragment.appendChild(elem);
   }
+  // appends the fragment to the DOM
   document.querySelector('#movingPizzas1').appendChild(pizzaFragment);
   updatePositions();
 });
