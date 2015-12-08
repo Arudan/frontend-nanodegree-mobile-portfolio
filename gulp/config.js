@@ -74,5 +74,8 @@ module.exports = {
     css:    srcAssets + '/css/**/*.css',
     js: srcAssets + '/js/**/*.js',
     images:  srcAssets + '/images/**/*',
+  },
+  autoprefixer: {
+    browsers: ['last 2 versions', 'ie > 7']
   }
 };
